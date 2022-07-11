@@ -1,0 +1,8 @@
+{
+  "name": "mmm-Emo-reco-dnn",
+  "version": "1.0",
+  "description": "Emotion Recognition with Open CV and Deep Neural Network",
+  "main": "MMM-Emo-Reco-DNN.js"
+  
+}
+
