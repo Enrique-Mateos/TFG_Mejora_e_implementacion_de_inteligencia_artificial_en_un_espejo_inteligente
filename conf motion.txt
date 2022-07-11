@@ -1,0 +1,59 @@
+# Modificar los siguientes parametros del archivo de configuracion
+
+daemon on
+# Image width (pixels). Valid range: Camera dependent, default: 320
+width 640
+
+# Image height (pixels). Valid range: Camera dependent, default: 240
+height 480
+
+# Maximum number of frames to be captured per second.
+# Valid range: 2-100. Default: 100 (almost no limit).
+framerate 60
+
+# Picture frames must contain motion at least the specified number of frames
+# in a row before they are detected as true motion. At the default of 1, all
+# motion is detected. Valid range: 1 to thousands, recommended 1-5
+minimum_motion_frames 3
+
+# Specifies the number of pre-captured (buffered) pictures from before motion
+# was detected that will be output at motion detection.
+# Recommended range: 0 to 5 (default: 0)
+# Do not use large values! Large values will cause Motion to skip video frames and
+# cause unsmooth movies. To smooth movies use larger values of post_capture instead.
+pre_capture 7
+
+# Number of frames to capture after motion is no longer detected (default: 0)
+post_capture 3
+
+# Maximum length in seconds of a movie
+# When value is exceeded a new movie file is created. (Default: 0 = infinite)
+max_movie_time 30
+
+# The quality (in percent) to be used by the jpeg and webp compression (default: 75)
+quality 100
+
+
+# Target base directory for pictures and films
+# Recommended to use absolute path. (Default: current working directory)
+target_dir /home/pi/motion/captures
+
+# Quality of the jpeg (in percent) images produced (default: 50)
+stream_quality 100
+
+# Maximum framerate for stream streams (default: 1)
+stream_maxrate 60
+
+# TCP/IP port for the http server to listen on (default: 0 = disabled)
+webcontrol_port 8082
+
+# Output for http server, select off to choose raw text plain (default: on)
+webcontrol_html_output off
+
+# Command to be executed when an event starts. (default: none)
+# An event starts at first motion detected after a period of no motion defined by event_gap
+on_event_start /usr/bin/python  /home/pi/bot_telegram/send_message.py
+
+# Command to be executed when a movie file (.mpg|.avi) is closed. (default: none)
+# To give the filename as an argument to a command append it with %f
+on_movie_end /usr/bin/python  /home/pi/bot_telegram/end_video.py

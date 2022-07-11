@@ -1,0 +1,2 @@
+sudo motion -m 
+
