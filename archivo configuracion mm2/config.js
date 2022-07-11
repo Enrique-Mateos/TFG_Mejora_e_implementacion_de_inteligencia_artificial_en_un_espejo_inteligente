@@ -1,14 +1,13 @@
-/* Magic Mirror Config Sample
+/* MagicMirror² Config Sample
  *
  * By Michael Teeuw https://michaelteeuw.nl
  * MIT Licensed.
  *
  * For more information on how you can configure this file
- * See https://github.com/MichMich/MagicMirror#configuration
- *
+ * see https://docs.magicmirror.builders/configuration/introduction.html
+ * and https://docs.magicmirror.builders/modules/configuration.html
  */
-
-var config = {
+let config = {
 	address: "localhost", 	// Address to listen on, can be:
 							// - "localhost", "127.0.0.1", "::1" to listen on loopback interface
 							// - another specific IPv4/6 to listen on a specific interface
@@ -19,15 +18,13 @@ var config = {
 			webviewTag: true,
 			webSecurity: false
 		}
-	  },	
+	  },
 	port: 8080,
-	basePath: "/", 	// The URL path where MagicMirror is hosted. If you are using a Reverse proxy
+	basePath: "/", 	// The URL path where MagicMirror² is hosted. If you are using a Reverse proxy
 					// you must set the sub path here. basePath must end with a /
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"], 	// Set [] to allow all IP addresses
-	
-	
 															// or add a specific IPv4 of 192.168.1.5 :
-													// ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.1.5"],
+															// ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.1.5"],
 															// or IPv4 range of 192.168.3.0 --> 192.168.3.15 use CIDR format :
 															// ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.3.0/28"],
 
@@ -47,27 +44,25 @@ var config = {
 	// true, force serveronly mode, because you want to.. no UI on this device
 
 	modules: [
-				      
 		{
 			module: "alert",
-			classes: "default everyone"
+			classes: "always"
+			
 		},
 		{
 			module: "updatenotification",
-			classes: "default everyone",
 			position: "top_bar"
 		},
 		{
 			module: "clock",
-			classes: "default everyone",
-			position: "top_left",
-			classes: "default everyone"
+			classes: "always",
+			position: "top_left"
+			
 		},
-		
-		
-		  {
+		{
 		    module: "MMM-Tools",
 		    position: 'top_center',
+		    disabled:true,
 		    classes: "kike",
 		    config: {
 		      refresh: 1000 * 5,
@@ -76,29 +71,26 @@ var config = {
 
 		    }
 		  },
-		  
-		  
-				
-		//{
-			//module: "calendar",
-			//header: "US Holidays",
-			//position: "top_left",
-			//disabled: true,
-			//config: {
-				//calendars: [
-					//{
-						//symbol: "calendar-check",
-						//url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"					}
-				//]
-			//}
-		//},
+		{
+			module: "calendar",
+			header: "US Holidays",
+			disabled:true,
+			position: "top_left",
+			config: {
+				calendars: [
+					{
+						symbol: "calendar-check",
+						url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"
+					}
+				]
+			}
+		},
 		//{
 			//module: "compliments",
-			//classes: "default everyone",
 			//position: "lower_third"
 		//},
-		//Inicio codigo modulo reconocimiento facial
-	  {
+		
+		{
 	      module: 'MMM-Face-Reco-DNN',
 	      disabled: false,
 	      config: {
@@ -141,14 +133,14 @@ var config = {
 	  //////Inicio codigo modulo reconocimiento emociones
 	  {
 	      module: 'MMM-Emotion-Reco-DNN',
-	      disabled: true,
-	      position: 'top_center',
-	      classes: "default everyone",
+	      disabled: false,
+	      position: 'bottom_left',
+	      classes: "kike",
 	      config: {
 		// Logout 15 seconds after user was not detecte anymore, if they will be detected between this 15 Seconds, they delay will start again
-		logoutDelay: 15000,
+		logoutDelay: 1000,
 		// How many time the recognition starts, with a RasPi 3+ it would be good every 2 seconds
-		checkInterval: 2000,
+		checkInterval: 500,
 		// Module set used for strangers and if no user is detected
 		defaultClass: 'default',
 		// Set of modules which should be shown for every user
@@ -186,17 +178,12 @@ var config = {
 	  },
 	  //fin codigo reconocimiento emociones
 	  
-	  
-	  
-	  
-		 
-		  
-			  {
+	    {
 		module: "MMM-UVIndex", //solo permitidas 50 peticiones diarias al servidor
-		disabled: true,
-		classes: "default everyone",
+		disabled: false,
+		classes: "always",
 		header: "Indice rayos UV - Madrid",
-		position: "top_left",  // This can be any of the regions. // Best results in left or right regions.
+		position: 'bottom_left',  // This can be any of the regions. // Best results in left or right regions.
 		config: {
 		    latitude: 40.40, //simply Google these values for the location you are interested in knowing the UV Index
 		    longitude: -3.70, 
@@ -204,9 +191,10 @@ var config = {
 		    customHeader: "Indice UltraVioleta Madrid" //Defaults to UV Index if not provided
 		}
 		},
-		{
+	  
+	  {
 		module: "MMM-AirQuality",
-		classes: "default everyone",
+		classes: "always",
 		header: "Calidad del aire - Madrid",
 		disabled: false,
 		position: "top_left", // you may choose any location
@@ -214,11 +202,11 @@ var config = {
 		  location: 'Madrid' // the location to check the index for
 			}
 		},
-	    
-			  {
+	  	
+	  	 {
 		    module: "MMM-Globe",
 		    disabled: false,
-		    classes: "default everyone",
+		    classes: "always",
 		    position: 'top_left',
 		    header: "Vista desde el satelite Himawari-8",
 		    config: {
@@ -229,10 +217,8 @@ var config = {
 			    updateInterval: 1*60*1000
 		    }
 		  },
-		  
-				  
-
-		{
+	  	
+	  	{
 			module: "MMM-DarkSkyForecast",
 			header: "Tiempo - Madrid",
 			position: "top_right",
@@ -254,12 +240,10 @@ var config = {
 				label_days: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"]
 			}
 		},
-		
-			
-
-		{
+	  	
+	  	{
 			module: "newsfeed",
-			position: "bottom_left",
+			position: "bottom_bar",
 			classes: "kike",
 			config: {
 				feeds: [
@@ -276,7 +260,8 @@ var config = {
 				updateInterval: 15000,
 			}
 		},
-		{
+	  	
+	  	{
 				module: 'calendar_monthly',
 				position: 'top_left',
 				classes: "default everyone",
@@ -285,65 +270,29 @@ var config = {
 						// Without a config, a default month view is shown
 						// Please see the 'Configuration Options' section for more information
 				}
-		},
+		},	
 		
-			{
+				{
 			module: 'MMM-GmailFeed',
 			position: 'top_left',
 			disabled: false,
 			classes: "kike",
 			config: {
 				username: 'tfgmm2@gmail.com',
-				password: 'jagratis',
+				password: 'zaqr ehkx nyhn dvrm',
 				updateInterval: 60000,
 				maxEmails: 8,
 				maxSubjectLength: 30,
 				maxFromLength: 0,
-				playSound: true,
+				playSound: false,
 				displayMode: "table",
 			}
 		      },
 		
-	      {
-		module: "MMM-GoogleAssistant",
-		disabled: true,
-		position: "top_center",//"fullscreen_above"
-		classes: "default everyone",//"default everyone"
-		configDeepMerge: true,
-		config: {
-		  debug: false,
-		  assistantConfig: {
-		    lang: "es-ES",
-		    latitude: 40.409681,
-		    longitude: -3.701644,
-		  },
-		 
-		  micConfig: {},
-		  Extented: {
-		    useEXT: false,
-		    youtube: {
-		      useYoutube: false,
-		      youtubeCommand: "youtube",
-		      displayResponse: true,
-		      useVLC: false,
-		      minVolume: 30,
-		      maxVolume: 100
-		      },
-		    
-		  },
-		  recipes: ["with-BackgroundStatus.js"],
-		  NPMCheck: {}
-		  
-		  
-		}
-	      },
-
-	      
-		      
-		      {
+			      {
 		  module: 'MMM-CoinMarketCap',
 		  position: "bottom_right",
-		  classes: "default everyone",//"default everyone"
+		  classes: "kike",
 		  disabled: false,
 		  header: "Cryptocurrencies",
 		  config: {
@@ -360,12 +309,12 @@ var config = {
 		      // See below for more Configuration Options
             }
         },
-		  
+				
 		{
 		  
 		  module: "MMM-AVStock",
 		  position: "bottom_left",
-		  classes: "default everyone",//"default everyone"
+		  classes: "kike",
 		  disabled: false,
 		  config: {
 		    apiKey : "IMAE0AP2N386JPRL",
@@ -400,11 +349,11 @@ var config = {
 		    
 		  }
 		},
-		     
-		     {
+		
+		    {
 			module: "MMM-GroveGestures",
 			position: "bottom_right",
-			classes: "default everyone",
+			classes: "always",
 			disabled: false,
 			config: {
 			  autoStart: true, //When Mirror starts, recognition will start.
@@ -496,11 +445,8 @@ var config = {
 			  },
 			}
 		      },
-		     
-		      
-		    		      
-		      
-	      {
+		
+		{
 		  module: "MMM-page-indicator", //importante posicionarlo antes de MMM-pages para el correcto conteo de paginas 
 		  position: 'bottom_bar',
 		  classes: "default everyone",
@@ -522,7 +468,7 @@ var config = {
 			    [["MMM-DarkSkyForecast", "newsfeed", "calendar_monthly",'MMM-GmailFeed','MMM-Emotion-Reco-DNN'],
 			     ["MMM-AirQuality", "MMM-UVIndex", "MMM-DarkSkyForecast", "MMM-Globe"],
 			     ["MMM-CoinMarketCap","MMM-AVStock"]],
-			fixed: ["MMM-GroveGestures","clock", "MMM-GoogleAssistant",
+			fixed: ["MMM-GroveGestures","clock", 
 			 "MMM-page-indicator", "alert",
 			  "updatenotification", "MMM-Tools"],
 			hiddenPages: {
@@ -532,24 +478,31 @@ var config = {
 			      }
 		      }
 		  },
-		  
-		  
+		
+	{
+        module: 'MMM-WebHookAlerts',   
+        disabled:false,     
+        position: 'fullscreen_above',
+         //header: "Mensajes Telegram", Se enviara como metadato desde el bot de telegram
+        config: {
+                fadeSpeed: 30,
+		displaySeconds:120,
+		sound:"twip.wav",
+		templates:
+		[
 
+		{
+			templateName: "SimpleAlert",
+			template: "{{message}}",
+			title  : "{{title}}", //Fallo en la mayuscula de la t T->t
+			displaySeconds:60,
+			fadeSpeed:10,
+			sound:"wobble.wav",
+		}
+		]    
+        }
+    },
 	
-	  
-	  
-	   //{
-	  //module: "MMM-MotionDetector",
-	  //classes: "default everyone",
-	  //position: "top_left", // Optional. This can be any of the regions. Displays debug informations.
-	  //config: {
-	  //// The config property is optional.
-	  //// See 'Configuration options' for more information.
-	//}
-      //},
-      
-      
-      
 	]
 };
 

@@ -7,6 +7,7 @@ import requests
 import os
 import glob
 import re
+import requests
 from telepot.loop import MessageLoop
 
 
@@ -20,7 +21,7 @@ def handle(msg):
     command = msg['text']
     #should work thanks to Winston
     if msg['from']['id'] != 333190865:
-        bot.sendMessage(chat_id, "Disculpa, yo solo respondo ante mi amo, buscate otro bot")
+        bot.sendMessage(chat_id, "Disculpe, solo puedo responder al usuario del espejo inteligente.")
         exit(1)
 
     print ('Got command: %s' % command)
@@ -51,9 +52,9 @@ def handle(msg):
         # send video, adapt the the first argument to your own telegram id
         bot.sendVideo(333190865, video=open(video, 'rb'), caption='Ultimo video - '+str(datetime.datetime.now()))
     elif command == '/help':
-        bot.sendMessage(chat_id, "funciones: /snapshot, /status, /pause, /resume, /check, /time, /video, /borrar_videos, /borrar_fotos, /Enviar_all_videos, /Enviar_all_pics, /Apagar_espejo")
+        bot.sendMessage(chat_id, "funciones: /snapshot, /status, /pause, /resume, /check, /time, /video, /borrar_videos, /borrar_fotos, /enviar_all_videos, /enviar_all_pics, /apagar_espejo, /mensaje")
     elif command == '/start':
-        bot.sendMessage(chat_id, "Hola, soy tu esclavo, para saber que puedo hacer por ti escribe /help")
+        bot.sendMessage(chat_id, "Hola, soy el bot del espejo inteligente, para saber que puedo hacer por ti escribe /help")
     elif command == '/borrar_fotos':
         archivosBorrados = []
         for archivo_jpg in glob.glob('/home/pi/motion/captures/*.jpg'): 
@@ -97,6 +98,9 @@ def handle(msg):
     elif '/mensaje' in command:
         message = re.sub ("/mensaje","",command)
         print ("mensaje en comando %s" % message)
+        datos = {'Content-Type' : 'aplication/json' , 'message' : message, 'title' : 'Mensaje de Telegram'}
+        resp = requests.post("http://localhost:8080/webhook?templateName=SimpleAlert" , data=datos)
+        bot.sendMessage(chat_id,"Mensaje: '" + message + "' enviado con exito")
     else:
         bot.sendMessage(chat_id, "Comando desconocido: "+command+", para conocer los comandos disponibles escriba /help ")
 # adapt the following to the bot_id:bot_token
